@@ -2,7 +2,7 @@
 
 ## Description
 
-This project uses Ruby to identify qualified job candidates based on their location and availability. It includes a Ruby script that leverages ActiveRecord, Geocoder, and Benchmark-ips to perform data manipulation and querying directly in memory using SQLite3.
+This enhanced Rails-based project efficiently identifies qualified job candidates based on their location and availability. It utilizes a highly optimized SQL query, ActiveRecord, and leverages Redis caching to manage and query large datasets with high efficiency. The database is carefully indexed to speed up query execution, and Redis is used to cache query results, drastically reducing response times and improving overall performance.
 
 Input Specifications:
 
@@ -23,37 +23,87 @@ Are available on all the specified dates.
 The list should be ordered by the job seekers' ratings for the role in descending order, prioritizing the most qualified candidates.
 ```
 
-## Requirements
+System Requirements
 
 - Ruby (version 3.2.2 or higher recommended)
+- Rails
+- Redis
 - Bundler
 
-## Installation
+Installation
 
-To run this project, follow these steps:
+Follow these steps to set up and run the project:
 
-Clone this repository to your local machine:
+- Clone the Repository
 
 ```
 git clone https://github.com/pipe2442/job-seeker-project.git
 cd job-seeker-project
 ```
 
-Ensure that Ruby and Bundler are installed on your system. You can check your Ruby and Bundler version by running:
+Verify Ruby and Bundler Installation
+Ensure Ruby and Bundler are installed:
 
 ```
 ruby -v
 bundler -v
 ```
 
-And install Bundler if it's not installed:
+If Bundler is not installed:
 
 ```
 gem install bundler
 ```
 
-To run the script, navigate to the project directory and execute:
+Install Redis
+Make sure Redis is installed and running on your system. Installation details can be found at Redis's official website [here](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
+
+Start Redis
 
 ```
-ruby job_seekers.rb
+redis-server
 ```
+
+Bundle Install
+Install the necessary Ruby gems:
+
+```
+bundle install
+```
+
+Setup Database
+Configure your database settings and run migrations:
+
+```
+rails db:create
+rails db:migrate
+rails db:seed
+```
+
+Start the Rails Server
+
+Run the server:
+
+```
+rails server
+```
+
+Running the Tasks
+
+To process job seekers based on the specified criteria, you can run two custom rake tasks:
+
+- Find Qualified Candidates
+  This task fetches job seekers who meet the given criteria using an optimized query:
+
+```
+rake job_seekers:find_qualified_candidates
+```
+
+Performance Test
+Run a performance test to see how efficiently the system handles queries with Redis caching:
+
+```
+rake performance:test
+```
+
+These tasks utilize indexed database queries and Redis caching to demonstrate high performance in processing and retrieving data.
